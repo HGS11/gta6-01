@@ -1,0 +1,5 @@
+import * as THREE from 'three';
+const box=(g,s,c,p)=>{const m=new THREE.Mesh(new THREE.BoxGeometry(...s),new THREE.MeshStandardMaterial({color:c,roughness:.7}));m.position.set(...p);m.castShadow=true;g.add(m);return m};
+export function makeActor(name,color){const g=new THREE.Group();box(g,[.8,1.2,.55],color,[0,1.5,0]);box(g,[.34,1.2,.34],0xe0a47e,[0,2.65,0]);box(g,[.24,1,.24],color,[-.32,.5,0]);box(g,[.24,1,.24],color,[.32,.5,0]);g.userData.actor={name,health:100};return {group:g,seed:Math.random()*9}}
+export function makeCar(style,color){const g=new THREE.Group(),body=box(g,style==='van'?[2.1,1.3,4.6]:[2,1.05,4],color,[0,1,0]);body.material.color.set(color);box(g,[1.7,.7,1.8],0x27343a,[0,1.75,-.2]);for(const x of [-1.08,1.08])for(const z of [-1.35,1.35]){const w=box(g,[.28,.5,.75],0x171d22,[x,.45,z]);w.rotation.z=Math.PI/2}box(g,[.28,.25,.08],0xffe2a5,[-.72,1.1,-2.02]);box(g,[.28,.25,.08],0xff4d45,[.72,1.1,2.02]);return {group:g,speed:0,driver:false}}
+export function makePolice(){const c=makeCar('sedan',0xeee9dd),bar=box(c.group,[.9,.18,.25],0x28599e,[0,2.25,0]);c.light=bar;c.group.userData.police=true;return c}
